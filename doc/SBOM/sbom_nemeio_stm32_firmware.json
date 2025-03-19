@@ -1,0 +1,276 @@
+{
+  "components": [
+    {
+      "bom-ref": "STM32L4@582777f6-efac-418e-a899-76f4df9ab35e",
+      "cpe": "cpe:2.3:o:st:stm32l4_firmware:-:*:*:*:*:*:*:*",
+      "name": "STM32L4",
+      "version": ""
+    },
+    {
+      "bom-ref": "CMSIS RTOS implementation for FreeRTOS@1.02",
+      "cpe": "cpe:2.3:o:st:stm32cubel4_firmware:-:*:*:*:*:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/STMicroelectronics/STM32CubeL4/tree/master/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "name": "CMSIS RTOS implementation for FreeRTOS",
+      "version": "1.02"
+    },
+    {
+      "bom-ref": "FreeRTOS@10.5.1",
+      "cpe": "cpe:2.3:o:amazon:freertos:10.5.1:*:*:*:-:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/FreeRTOS/FreeRTOS-Kernel/tree/V10.2.0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "FreeRTOS",
+      "version": "10.5.1"
+    },
+    {
+      "bom-ref": "LittleFS@2.4.1",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/littlefs-project/littlefs/tree/v2.4.1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "name": "LittleFS",
+      "version": "2.4.1"
+    },
+    {
+      "bom-ref": "Newlib nanolib@4.1.0",
+      "cpe": "cpe:2.3:a:newlib_project:newlib:4.1.0:*:*:*:*:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://sourceware.org/git/?p=newlib-cygwin.git;a=commit;h=415fdd4279b85eeec9d54775ce13c5c412451e08"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Various MIT/BSD-like licenses"
+          }
+        }
+      ],
+      "name": "Newlib nanolib",
+      "version": "4.1.0"
+    },
+    {
+      "bom-ref": "QCBOR@1.2",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/laurencelundblade/QCBOR/tree/v1.2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "name": "QCBOR",
+      "version": "1.2"
+    },
+    {
+      "bom-ref": "STM32 Cryptographic Middleware@3.0.0",
+      "cpe": "cpe:2.3:a:st:stm32cubemx:-:*:*:*:*:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://www.st.com/en/embedded-software/x-cube-crypto-v3.html"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "ST SLA0044"
+          }
+        }
+      ],
+      "name": "STM32 Cryptographic Middleware",
+      "version": "3.0.0"
+    },
+    {
+      "bom-ref": "STM32 HAL@1.8.1",
+      "cpe": "cpe:2.3:o:st:stm32cubel4_firmware:-:*:*:*:*:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/STMicroelectronics/STM32CubeL4/tree/master/Drivers/STM32L4xx_HAL_Driver"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "name": "STM32 HAL",
+      "version": "1.8.1"
+    },
+    {
+      "bom-ref": "STM32 USB Device Library@2.4.2",
+      "cpe": "cpe:2.3:a:st:stm32cubemx:-:*:*:*:*:*:*:*",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/STMicroelectronics/STM32CubeL4/tree/master/Middlewares/ST/STM32_USB_Device_Library"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "MCD-ST Liberty SW License Agreement V2"
+          }
+        }
+      ],
+      "name": "STM32 USB Device Library",
+      "version": "2.4.2"
+    },
+    {
+      "bom-ref": "STM32L4 firmware@6ad6a2d9-b6a5-4a57-b2e2-f460a0dc6f35",
+      "cpe": "cpe:2.3:o:st:stm32cubel4_firmware:-:*:*:*:*:*:*:*",
+      "name": "STM32L4 firmware",
+      "version": ""
+    },
+    {
+      "bom-ref": "TinyDeflate@a0a6f574c7ef8db978ead04f574affa48521d148",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "https://github.com/bisqwit/TinyDeflate/commit/a0a6f574c7ef8db978ead04f574affa48521d148"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Zlib"
+          }
+        }
+      ],
+      "name": "TinyDeflate",
+      "version": "a0a6f574c7ef8db978ead04f574affa48521d148"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "CMSIS RTOS implementation for FreeRTOS@1.02"
+    },
+    {
+      "ref": "FreeRTOS@10.5.1"
+    },
+    {
+      "ref": "LittleFS@2.4.1"
+    },
+    {
+      "ref": "Nemeio STM32 firmware"
+    },
+    {
+      "ref": "Newlib nanolib@4.1.0"
+    },
+    {
+      "ref": "QCBOR@1.2"
+    },
+    {
+      "ref": "STM32 Cryptographic Middleware@3.0.0"
+    },
+    {
+      "ref": "STM32 HAL@1.8.1"
+    },
+    {
+      "ref": "STM32 USB Device Library@2.4.2"
+    },
+    {
+      "ref": "STM32L4 firmware@6ad6a2d9-b6a5-4a57-b2e2-f460a0dc6f35"
+    },
+    {
+      "ref": "STM32L4@582777f6-efac-418e-a899-76f4df9ab35e"
+    },
+    {
+      "ref": "TinyDeflate@a0a6f574c7ef8db978ead04f574affa48521d148"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "Nemeio STM32 firmware",
+      "name": "Nemeio STM32 firmware",
+      "type": "library"
+    },
+    "timestamp": "2023-05-25T09:08:51.359257+00:00",
+    "tools": [
+      {
+        "externalReferences": [
+          {
+            "type": "build-system",
+            "url": "https://github.com/CycloneDX/cyclonedx-python-lib/actions"
+          },
+          {
+            "type": "distribution",
+            "url": "https://pypi.org/project/cyclonedx-python-lib/"
+          },
+          {
+            "type": "documentation",
+            "url": "https://cyclonedx.github.io/cyclonedx-python-lib/"
+          },
+          {
+            "type": "issue-tracker",
+            "url": "https://github.com/CycloneDX/cyclonedx-python-lib/issues"
+          },
+          {
+            "type": "license",
+            "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/LICENSE"
+          },
+          {
+            "type": "release-notes",
+            "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/CHANGELOG.md"
+          },
+          {
+            "type": "vcs",
+            "url": "https://github.com/CycloneDX/cyclonedx-python-lib"
+          },
+          {
+            "type": "website",
+            "url": "https://cyclonedx.org"
+          }
+        ],
+        "name": "cyclonedx-python-lib",
+        "vendor": "CycloneDX",
+        "version": "4.0.0"
+      }
+    ]
+  },
+  "serialNumber": "urn:uuid:5f48bacb-0dc3-45ee-a018-8a230cb9533d",
+  "version": 1,
+  "$schema": "http://cyclonedx.org/schema/bom-1.4.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4"
+}

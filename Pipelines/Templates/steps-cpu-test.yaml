@@ -1,0 +1,29 @@
+### This template builds and run the tests, and exports the coverage report
+
+parameters:
+  - name: RepositoryPath
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: CoverageArtifactName
+    type: string
+    default: test-coverage
+  - name: DisableTests
+    type: boolean
+    default: false
+
+steps:
+  - script: ${{ parameters.RepositoryPath }}/validate.sh
+    condition: eq('${{ parameters.DisableTests }}', false)
+    displayName: Build and Test
+    target:
+      container: testing
+  - task: PublishTestResults@2
+    condition: eq('${{ parameters.DisableTests }}', false)
+    inputs:
+      testResultsFormat: "JUnit"
+      testResultsFiles: "test/test-reports/karmeliet_test_report.xml"
+      failTaskOnFailedTests: true
+      publishRunAttachments: true
+  - publish: ${{ parameters.RepositoryPath }}/test-coverage
+    condition: eq('${{ parameters.DisableTests }}', false)
+    artifact: test-coverage

@@ -1,0 +1,112 @@
+### This template builds the firmware
+
+parameters:
+  - name: RepositoryPath
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: BuildArtifactName
+    type: string
+    default: Binaries
+  - name: GetAesKeyAzure
+    type: boolean
+    default: true
+  - name: SecureBoot
+    type: number
+    default: 0
+  - name: CEM_TESTS
+    type: number
+    default: 0
+  - name: ROLLBACK_TESTS
+    type: number
+    default: 0
+  - name: GOLDEN_IMAGE
+    type: number
+    default: 0
+  - name: AzureKeyVaultStm32AesKeyName
+    type: string
+    default: ""
+  - name: BuildTools
+    type: boolean
+    default: false
+
+steps:
+  - task: DownloadSecureFile@1
+    displayName: "Download STM32 Public Key from SecureFiles"
+    name: PopulatePublicKeyStm32_${{ parameters.BuildArtifactName }}
+    inputs:
+      secureFile: azure_stm32_pubkey.pem
+
+  - task: DownloadSecureFile@1
+    displayName: "Download Package Public Key from SecureFiles"
+    name: PopulatePublicKeyPkg_${{ parameters.BuildArtifactName }}
+    inputs:
+      secureFile: azure_pkg_pubkey.pem
+
+  - task: Bash@3
+    displayName: "Copy package public key"
+    inputs:
+      targetType: inline
+      script: |
+        cp $(PopulatePublicKeyPkg_${{ parameters.BuildArtifactName }}.secureFilePath) ${{ parameters.RepositoryPath }}/Tools/package_signature/public_key/ecdsa_pkg_key_public.pem
+
+
+  - ${{ if eq(parameters.GetAesKeyAzure, true) }}:
+    - template: get-encryption-key.yaml
+      parameters:
+        RepositoryPath: ${{ parameters.RepositoryPath }}
+        KeySecretName: ${{ parameters.AzureKeyVaultStm32AesKeyName }}
+
+  - script: |
+      ${{ parameters.RepositoryPath }}/init_build.sh
+      ${{ parameters.RepositoryPath }}/build_bootloader.sh
+    env:
+      NEMEIO_AZURE_KEYVAULT_URL: $(AzureKeyVaultUrl)
+      NEMEIO_AZURE_KEYVAULT_STM32_KEYNAME: $(AzureKeyVaultStm32KeyName)
+      NEMEIO_AZURE_KEYVAULT_STM32_PUBKEY_PEM_PATH: $(PopulatePublicKeyStm32_${{ parameters.BuildArtifactName }}.secureFilePath)
+      NEMEIO_AZURE_KEYVAULT_PKG_KEYNAME: $(AzureKeyVaultPkgKeyName)
+      NEMEIO_AZURE_KEYVAULT_PKG_PUBKEY_PEM_PATH: $(PopulatePublicKeyPkg_${{ parameters.BuildArtifactName }}.secureFilePath)
+      AZURE_CLIENT_ID: $(nemeio-azure-keyvault-client-id)
+      AZURE_CLIENT_SECRET: $(nemeio-azure-keyvault-client-secret)
+      AZURE_TENANT_ID: $(nemeio-azure-keyvault-tenant-id)
+      CEM_TESTS: ${{ parameters.CEM_TESTS }}
+      ROLLBACK_TESTS: ${{ parameters.ROLLBACK_TESTS }}
+      GOLDEN_IMAGE: ${{ parameters.GOLDEN_IMAGE }}
+      ENABLE_SECURE_BOOT: ${{ parameters.SecureBoot }}
+    displayName: "Build bootloader"
+    target:
+      container: compilation_gcc10
+
+  - script: ${{ parameters.RepositoryPath }}/build_app.sh
+    env:
+      NEMEIO_AZURE_KEYVAULT_URL: $(AzureKeyVaultUrl)
+      NEMEIO_AZURE_KEYVAULT_STM32_KEYNAME: $(AzureKeyVaultStm32KeyName)
+      NEMEIO_AZURE_KEYVAULT_STM32_PUBKEY_PEM_PATH: $(PopulatePublicKeyStm32_${{ parameters.BuildArtifactName }}.secureFilePath)
+      NEMEIO_AZURE_KEYVAULT_PKG_KEYNAME: $(AzureKeyVaultPkgKeyName)
+      NEMEIO_AZURE_KEYVAULT_PKG_PUBKEY_PEM_PATH: $(PopulatePublicKeyPkg_${{ parameters.BuildArtifactName }}.secureFilePath)
+      AZURE_CLIENT_ID: $(nemeio-azure-keyvault-client-id)
+      AZURE_CLIENT_SECRET: $(nemeio-azure-keyvault-client-secret)
+      AZURE_TENANT_ID: $(nemeio-azure-keyvault-tenant-id)
+      CEM_TESTS: ${{ parameters.CEM_TESTS }}
+      ROLLBACK_TESTS: ${{ parameters.ROLLBACK_TESTS }}
+      GOLDEN_IMAGE: ${{ parameters.GOLDEN_IMAGE }}
+      ENABLE_SECURE_BOOT: ${{ parameters.SecureBoot }}
+    displayName: "Build application"
+    target:
+      container: compilation
+
+  - script: ${{ parameters.RepositoryPath }}/buildtools.sh
+    condition: eq('${{ parameters.BuildTools }}', true)
+    displayName: Build tools
+    target:
+      container: compilation
+
+  - bash: |
+      cp ${{ parameters.RepositoryPath }}/version.txt ${{ parameters.RepositoryPath }}/build_release/Binary/version.txt
+    displayName: "Copy version.txt to Artifact directory"
+
+  - publish: ${{ parameters.RepositoryPath }}/build_release/Binary
+    artifact: ${{ parameters.BuildArtifactName }}
+
+  - publish: ${{ parameters.RepositoryPath }}/build_release/Tools
+    condition: eq('${{ parameters.BuildTools }}', true)
+    artifact: ${{ parameters.BuildArtifactName }}_tools

@@ -1,0 +1,7 @@
+exitonerror 1
+h
+r
+erase
+r
+loadbin ${BIN_FILE}, 0x8000000
+qc

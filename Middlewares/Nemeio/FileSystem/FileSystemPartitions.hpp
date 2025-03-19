@@ -1,0 +1,25 @@
+/*
+ * FileSystemPartitions.hpp
+ *
+ *  Created on: March 26, 2021
+ *      Author: thomas
+ */
+
+#ifndef NEMEIO_FILESYSTEM_FILESYSTEMPARTITIONS_HPP_
+#define NEMEIO_FILESYSTEM_FILESYSTEMPARTITIONS_HPP_
+
+enum class FileSystemPartitionLabel
+{
+    MAIN = 0,
+    FIRMWARE_ENV_BANK_A,
+    FIRMWARE_ENV_BANK_B,
+    FIRMWARE_UPDATE_BANK_A,
+    FIRMWARE_UPDATE_BANK_B,
+    MAX_PARTITION,
+    INTERNAL_OTP_PARTITION = 252,
+    ITE_PARTITION = 253,
+    SECURE_PARTITION = 254,
+    UNKNOWN = 255,
+};
+
+#endif /* NEMEIO_FILESYSTEM_FILESYSTEMPARTITIONS_HPP_ */

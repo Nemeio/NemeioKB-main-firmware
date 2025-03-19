@@ -1,0 +1,14 @@
+/Debug/
+/nRF52/nRF5_SDK
+tags
+/.settings/
+/Release/
+*.dep
+*.o
+_build
+/nRF52/LDLC_BLE_HID_Keyboard/LDLC_Keyboard/s132/iar/settings
+/nRF52/LDLC_BLE_HID_Keyboard/settings
+build_release/
+test/build/
+package_signature/public_key/
+package_signature/update_package_ecdsa_public_key.c

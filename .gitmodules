@@ -1,0 +1,24 @@
+[submodule "BootloaderSBSFU"]
+	path = BootloaderSBSFU
+	# For pipeline
+	url = https://bitbucket.org/adeneo-embedded/b1994-ldlc-karmeliet-bootloader-sbsfu.git
+	# For dev
+	#url = ssh://git@bitbucket.org/adeneo-embedded/b1994-ldlc-karmeliet-bootloader-sbsfu.git
+[submodule "Middlewares/Third_Party/LittleFS"]
+	path = Middlewares/Third_Party/LittleFS
+	url = https://github.com/littlefs-project/littlefs
+[submodule "Middlewares/Third_Party/etl"]
+	path = Middlewares/Third_Party/etl
+	url = https://github.com/ETLCPP/etl.git
+[submodule "Middlewares/Third_Party/QCBOR"]
+	path = Middlewares/Third_Party/QCBOR
+	url = https://github.com/laurencelundblade/QCBOR.git
+[submodule "Middlewares/ST/STM32_Crypto"]
+	path = Middlewares/ST/STM32_Crypto
+	url = https://bitbucket.org/adeneo-embedded/b1994-ldlc-karmeliet-stm32-cryptolib.git
+[submodule "Middlewares/Third_Party/TinyDeflate"]
+	path = Middlewares/Third_Party/TinyDeflate
+	url = https://github.com/bisqwit/TinyDeflate.git
+[submodule "Middlewares/Third_Party/FreeRTOS-Kernel"]
+	path = Middlewares/Third_Party/FreeRTOS-Kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git

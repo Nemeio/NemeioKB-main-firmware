@@ -1,0 +1,57 @@
+@startuml
+
+
+[*] --> Off
+
+state Ready {
+    state Enabled {
+        
+        [*] --> StartingAdvertising
+        StartingAdvertising: entry /doStartAdvertising
+
+        Advertising: entry /doNotifyAdvertisingStarted
+        Advertising: exit /doNotifyAdvertisingStopped
+
+        Connected: entry /doNotifyConnected
+        Connected: exit /doNotifyDisconnected
+    }
+    Enabled: exit /doStopAdvertising
+    [*] --> Configured
+}
+
+Off --> On : init
+
+On --> Off : powerOff /doPowerOff
+On --> Started : started
+On --> Dfu : enteredDfu
+
+Started : entry /doNotifyStarted()
+Started --> Off : powerOff /doPowerOff
+Started --> Started : started /doNotifyStarted
+Started --> Dfu : enteredDfu
+Started --> Ready : configure /doConfigure
+
+Dfu --> Off : powerOff /doPowerOff
+
+Ready : entry /doNotifyReady()
+Ready --> Off : powerOff /doPowerOff
+Ready --> Dfu : enteredDfu
+
+Configured --> Configured : started /doConfigure
+Configured --> Enabled : enableBle
+
+Enabled --> StartingAdvertising : started /doConfigure
+Enabled --> Dfu : enteredDfu
+Enabled --> Configured : disableBle
+
+Advertising --> Connected : connected
+Advertising --> StartingAdvertising : advertisingStopped
+
+Connected --> StartingAdvertising : disconnected
+
+Ready --> Ready : txRequest
+Ready --> Ready : txCommand
+
+Dfu --> Dfu : dfuTxCommand
+
+@enduml

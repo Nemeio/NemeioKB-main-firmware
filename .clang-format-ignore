@@ -1,0 +1,8 @@
+# External code
+Drivers/.*
+Inc/diag/.*
+Inc/arm/.*
+Libraries/SEGGER/.*
+Middlewares/ST/.*
+Middlewares/Third_Party/.*
+Src/diag/.*

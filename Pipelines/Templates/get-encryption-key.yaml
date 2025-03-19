@@ -1,0 +1,25 @@
+### This template gets the encryption key for the STM32 from Key Vault
+# It should be called before any build/encryption task
+
+parameters:
+  - name: RepositoryPath
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: KeySecretName
+    type: string
+
+steps:
+  - task: Bash@3
+    displayName: Install encryption key
+    inputs:
+      targetType: inline
+      script: |
+        cd ${{ parameters.RepositoryPath }}/BootloaderSBSFU/Projects/STM32L496-Karmeliet/Applications/2_Images/2_Images_SECoreBin/Binary/
+        rm -rf ./*
+        # Get the key to use from Azure Key Vault
+        echo "$(${{ parameters.KeySecretName }})" \
+          | base64 --decode \
+          > OEM_KEY_COMPANY1_key_AES_CBC.bin
+        # Generate a new IV
+        openssl rand 16 > iv.bin
+        ls

@@ -1,0 +1,146 @@
+### This document is the root of the pipeline B2047 - LDLC - Karmeliet - STM
+### It builds the CPU and CPU CEM firmwares and runs the tests and Sonar analysis
+### on any branch's push and on PR
+
+variables:
+  - group: Embedded_Sonar
+  - group: Services
+  - group: Key Vault
+
+resources:
+  containers:
+    - container: compilation
+      endpoint: witekio-dockerhub-service-connection
+      image: witekio/mcu-toolchain-gnu-arm-embedded:24.01
+      options: --user root --entrypoint=""
+    - container: compilation_gcc10
+      endpoint: witekio-dockerhub-service-connection
+      image: witekio/mcu-toolchain-gnu-arm-embedded:23.01
+      options: --user root --entrypoint=""
+    - container: testing
+      endpoint: witekio-dockerhub-service-connection
+      image: witekio/mcu-toolchain-test:23.04
+      options: --user root --entrypoint=""
+
+trigger:
+  branches:
+    include:
+      - '*'
+pr:
+  autoCancel: true
+  branches:
+    exclude:
+      - 'testing'
+    include:
+      - '*'
+
+stages:
+  - stage: Firmware_Compilation
+    jobs:
+      - job: Compile_CPU_Firmware
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        container: compilation
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+          - template: Templates/steps-cpu-build.yaml
+            parameters:
+              BuildArtifactName: "Binaries_dev"
+              AzureKeyVaultStm32AesKeyName: stm32-aes-key-testprod
+              BuildTools: true
+
+  - stage: Firmware_Compilation_Production
+    jobs:
+      - job: Compile_CPU_Firmware_Production
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        container: compilation
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+
+          - template: Templates/steps-cpu-build.yaml
+            parameters:
+              BuildArtifactName: "Binaries_prod"
+              SecureBoot: 1
+              AzureKeyVaultStm32AesKeyName: stm32-aes-key-testprod
+              BuildTools: true
+
+  - stage: Firmware_Compilation_Golden_Image
+    jobs:
+      - job: Compile_CPU_Firmware_Golden_Image
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        container: compilation
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+          - template: Templates/steps-cpu-build.yaml
+            parameters:
+              BuildArtifactName: "Binaries_golden_image"
+              GOLDEN_IMAGE: 1
+              AzureKeyVaultStm32AesKeyName: stm32-aes-key-testprod
+
+  - stage: Firmware_Cem_Compilation
+    jobs:
+      - job: Compile_CPU_CEM_Firmware
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+          - template: Templates/steps-cpu-build.yaml
+            parameters:
+              BuildArtifactName: "Binaries_cem"
+              CEM_TESTS: 1
+              AzureKeyVaultStm32AesKeyName: stm32-aes-key-testprod
+
+  - stage: Firmware_Rollback_Test_Compilation
+    jobs:
+      - job: Compile_CPU_Rollback_Test_Firmware
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+          - template: Templates/steps-cpu-build.yaml
+            parameters:
+              BuildArtifactName: "Binaries_rollback_test"
+              ROLLBACK_TESTS: 1
+              AzureKeyVaultStm32AesKeyName: stm32-aes-key-testprod
+
+  - stage: Firmware_Testing
+    jobs:
+      - job: Testing_CPU_Firmware
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        steps:
+          - checkout: self
+            submodules: recursive
+            clean: true
+            fetchDepth: 1
+            persistCredentials: true  # For LFS files
+          - template: Templates/steps-cpu-test.yaml
+
+  - stage: Firmware_Analysis
+    condition: or(eq(variables['Build.SourceBranchName'], 'develop'), eq(variables['Build.Reason'], 'PullRequest'))
+    dependsOn: Firmware_Testing
+    jobs:
+      - job: Analyzing_CPU_Firmware
+        pool:
+          name: "B2047-LDLC-Karmeliet-vmss-ubuntu2004"
+        steps:
+          - checkout: self
+            submodules: recursive
+          - template: Templates/steps-cpu-sonar.yaml
